@@ -8,6 +8,7 @@ enum Player {
 
 void display_gameboard(Player **pptr_board);
 void display_current_player(Player player);
+void add_player_selection(Player **pptr_board, Player player, int col);
 std::string get_player_character(Player player);
 
 int num_rows = 4;
@@ -35,11 +36,29 @@ int main() {
         std::cout << "Which column do you want to add your player to? (-1 to quit)  ";
         std::cin >> col;
         if (col == -1) break;
+        add_player_selection(pptr_board, current_player, col);
         current_player = current_player == PL_1 ? PL_2 : PL_1;
     }
 
     std::cout << std::endl;
     return 0;
+}
+
+void add_player_selection(Player **pptr_board, Player player, int col) {
+    int last_row = num_rows - 1;
+    for (int row = 0; row < num_rows; row++) {
+        // if we hit a non-empty row in this col
+        if (pptr_board[row][col] != PL_EMPTY) {
+            // add this player to the row above, but only if we're not on the 0th row
+            if (row > 0) {
+                pptr_board[row-1][col] = player;
+            }
+            break;
+        } else if (row == last_row) {
+            pptr_board[row][col] = player;
+            break;
+        }
+    }
 }
 
 void display_current_player(Player player) {
