@@ -12,6 +12,7 @@ void add_player_selection(Player **pptr_board, Player player, int col);
 std::string get_current_player(Player player);
 std::string get_player_character(Player player);
 
+Player check_for_winner(Player **pptr_board);
 Player check_cols_for_winner(Player **pptr_board);
 Player check_rows_for_winner(Player **pptr_board);
 Player check_diagonals_for_winner(Player **pptr_board);
@@ -34,6 +35,7 @@ int main() {
     }
 
     Player current_player = PL_1;
+    Player winner;
     int col;
 
     while (true) {
@@ -43,13 +45,8 @@ int main() {
         std::cin >> col;
         if (col == -1) break;
         add_player_selection(pptr_board, current_player, col);
-        if (check_rows_for_winner(pptr_board) != PL_EMPTY) {
-            std::cout << "\n" << get_current_player(current_player) << " wins!\n\n";
-            break;
-        } else if (check_cols_for_winner(pptr_board) != PL_EMPTY) {
-            std::cout << "\n" << get_current_player(current_player) << " wins!\n\n";
-            break;
-        } else if (check_diagonals_for_winner(pptr_board) != PL_EMPTY) {
+        winner = check_for_winner(pptr_board);
+        if (winner != PL_EMPTY) {
             std::cout << "\n" << get_current_player(current_player) << " wins!\n\n";
             break;
         }
@@ -60,6 +57,23 @@ int main() {
 
     std::cout << std::endl;
     return 0;
+}
+
+Player check_for_winner(Player **pptr_board) {
+    Player winner; 
+    winner = check_rows_for_winner(pptr_board);
+    if ( winner != PL_EMPTY) {
+        return winner;
+    }
+    winner = check_cols_for_winner(pptr_board);
+    if ( winner != PL_EMPTY) {
+        return winner;
+    }
+    winner = check_diagonals_for_winner(pptr_board);
+    if (winner != PL_EMPTY) {
+        return winner;
+    }
+    return PL_EMPTY;
 }
 
 Player walk_ltr_dialgonal_row(Player **pptr_board, int start_row) {
