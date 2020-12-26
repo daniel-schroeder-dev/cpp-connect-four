@@ -15,8 +15,9 @@ std::string get_player_character(Player player);
 Player check_cols_for_winner(Player **pptr_board);
 Player check_rows_for_winner(Player **pptr_board);
 Player check_diagonals_for_winner(Player **pptr_board);
+Player walk_ltr_dialgonal_row(Player **pptr_board, int start_row);
 
-int num_rows = 4;
+int num_rows = 5;
 int num_cols = 5;
 
 int main() {
@@ -37,18 +38,19 @@ int main() {
 
     while (true) {
         display_gameboard(pptr_board);
-        std::cout << get_current_player(current_player) << "'s turn.\n";
+        std::cout << "\n" << get_current_player(current_player) << "'s turn.\n";
         std::cout << "Which column do you want to add your player to? (-1 to quit)  ";
         std::cin >> col;
         if (col == -1) break;
         add_player_selection(pptr_board, current_player, col);
-        if (
-            check_rows_for_winner(pptr_board) != PL_EMPTY || 
-            check_cols_for_winner(pptr_board) != PL_EMPTY ||
-            check_diagonals_for_winner(pptr_board) != PL_EMPTY
-            ) 
-        {
-            std::cout << get_current_player(current_player) << " wins!\n\n";
+        if (check_rows_for_winner(pptr_board) != PL_EMPTY) {
+            std::cout << "\n" << get_current_player(current_player) << " wins!\n\n";
+            break;
+        } else if (check_cols_for_winner(pptr_board) != PL_EMPTY) {
+            std::cout << "\n" << get_current_player(current_player) << " wins!\n\n";
+            break;
+        } else if (check_diagonals_for_winner(pptr_board) != PL_EMPTY) {
+            std::cout << "\n" << get_current_player(current_player) << " wins!\n\n";
             break;
         }
         current_player = current_player == PL_1 ? PL_2 : PL_1;
@@ -60,23 +62,17 @@ int main() {
     return 0;
 }
 
-Player check_diagonals_for_winner(Player **pptr_board) {
+Player walk_ltr_dialgonal_row(Player **pptr_board, int start_row) {
     Player last_player;
     Player current_player;
-    // left-to-right diagonal
     int start_col = 0;
     int current_row = 0;
     int current_col;
     int similar_count = 0;
-
-    // 0,0  1,1  2,2  3,3
-    // 0,1  1,2  2,3  3,4
-    // break
-
     for (int col = 0; col < num_cols - 3; col++) {
         last_player = PL_EMPTY;
         current_col = col;
-        for (int row = 0; row < num_rows; row++) {
+        for (int row = start_row; row < num_rows; row++) {
             current_player = pptr_board[row][current_col];
             if (current_player == last_player && current_player != PL_EMPTY) {
                 similar_count++;
@@ -90,6 +86,22 @@ Player check_diagonals_for_winner(Player **pptr_board) {
             current_col++;
         }
     }
+    return PL_EMPTY;   
+}
+
+Player check_diagonals_for_winner(Player **pptr_board) {
+    Player winner;
+
+    // 0,0  1,1  2,2  3,3
+    // 0,1  1,2  2,3  3,4
+    // break
+
+    // 1,0  2,1  3,2  4,3
+    for (int row = 0; row < num_rows - 3; row++) {
+        winner = walk_ltr_dialgonal_row(pptr_board, row);
+        if (winner != PL_EMPTY) return winner;
+    }
+
     return PL_EMPTY;
 }
 
@@ -104,12 +116,13 @@ Player check_cols_for_winner(Player **pptr_board) {
             current_player = pptr_board[row][col];
             if (current_player == last_player && current_player != PL_EMPTY) {
                 similar_count++;
+                if (similar_count == 3) {
+                    return current_player;
+                }
             } else {
                 similar_count = 0;
             }
-            if (similar_count == 3) {
-                return current_player;
-            }
+            last_player = current_player;
         }
     }
     return PL_EMPTY;  
@@ -126,12 +139,13 @@ Player check_rows_for_winner(Player **pptr_board) {
             current_player = pptr_board[row][col];
             if (current_player == last_player && current_player != PL_EMPTY) {
                 similar_count++;
+                if (similar_count == 3) {
+                    return current_player;
+                }
             } else {
                 similar_count = 0;
             }
-            if (similar_count == 3) {
-                return current_player;
-            }
+            last_player = current_player;
         }
     }
     return PL_EMPTY;
