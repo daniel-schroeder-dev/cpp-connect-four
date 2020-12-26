@@ -41,8 +41,8 @@ int main() {
 
     while (true) {
         display_gameboard(pptr_board);
-        std::cout << "\n" << get_current_player(current_player) << "'s turn.\n";
-        std::cout << "Which column do you want to add your player to? (-1 to quit)  ";
+        std::cout << "\n" << get_current_player(current_player) << "'s turn\n";
+        std::cout << "Which column do you want to add your player to? (-1 to quit) ";
         std::cin >> col;
         if (col == -1) break;
         add_player_selection(pptr_board, current_player, col);
