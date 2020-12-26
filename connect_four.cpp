@@ -19,10 +19,22 @@ Player check_diagonals_for_winner(Player **pptr_board);
 Player walk_ltr_dialgonal_row(Player **pptr_board, int start_row);
 Player walk_rtl_dialgonal_row(Player **pptr_board, int start_row);
 
-int num_rows = 5;
-int num_cols = 5;
+int num_rows = 0;
+int num_cols = 0;
 
 int main() {
+
+    while (num_rows < 4) {
+        std::cout << "Enter number of rows for gameboard (4 min): ";
+        std::cin >> num_rows;
+    }
+
+    while (num_cols < 4) {
+        std::cout << "Enter number of columns for gameboard (4 min): ";
+        std::cin >> num_cols;
+    }
+
+
     Player **pptr_board = new Player*[num_rows];
 
     for (int i = 0; i < num_rows; i++) {
