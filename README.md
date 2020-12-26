@@ -24,7 +24,17 @@ Otherwise, you can compile the `.cpp` file and run that using whatever compiler 
 g++ connect_four.cpp -o connect_four && ./connect_four
 ```
 
-![connect four gif](connect-four.gif)
+### Column Winners
+
+![connect four column winner gif](connect-four-column-winner.gif)
+
+### Row Winners
+
+![connect four row winner gif](connect-four-row-winner.gif)
+
+### Left-To-Right Diagonal Winner
+
+### Right-To-Left Diagonal Winner
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
