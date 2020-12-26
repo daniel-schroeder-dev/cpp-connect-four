@@ -25,7 +25,16 @@ int main() {
         }
     }
 
-    display_gameboard(pptr_board);
+    Player current = PL_1;
+    int col;
+
+    while (true) {
+        display_gameboard(pptr_board);
+        std::cout << "Which column do you want to add your player to? (-1 to quit)  ";
+        std::cin >> col;
+        if (col == -1) break;
+        current = current == PL_1 ? PL_2 : PL_1;
+    }
 
     std::cout << std::endl;
     return 0;
