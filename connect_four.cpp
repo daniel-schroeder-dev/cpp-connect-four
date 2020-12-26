@@ -7,8 +7,9 @@ enum Player {
 };
 
 void display_gameboard(Player **pptr_board);
-void display_current_player(Player player);
+std::string get_current_player(Player player);
 void add_player_selection(Player **pptr_board, Player player, int col);
+Player check_rows_for_winner(Player **pptr_board);
 std::string get_player_character(Player player);
 
 int num_rows = 4;
@@ -32,16 +33,44 @@ int main() {
 
     while (true) {
         display_gameboard(pptr_board);
-        display_current_player(current_player);
+        std::cout << get_current_player(current_player) << "'s turn.\n";
         std::cout << "Which column do you want to add your player to? (-1 to quit)  ";
         std::cin >> col;
         if (col == -1) break;
         add_player_selection(pptr_board, current_player, col);
+        if (check_rows_for_winner(pptr_board) != PL_EMPTY) {
+            std::cout << get_current_player(current_player) << " wins!\n\n";
+            break;
+        }
         current_player = current_player == PL_1 ? PL_2 : PL_1;
     }
 
+    display_gameboard(pptr_board);
+
     std::cout << std::endl;
     return 0;
+}
+
+Player check_rows_for_winner(Player **pptr_board) {
+    Player last_player;
+    Player current_player;
+    for (int row = 0; row < num_rows; row++) {
+        int similar_count = 0;
+        // get the first column before we walk the rest
+        last_player = pptr_board[row][0];
+        for (int col = 1; col < num_cols; col++) {
+            current_player = pptr_board[row][col];
+            if (current_player == last_player && current_player != PL_EMPTY) {
+                similar_count++;
+            } else {
+                similar_count = 0;
+            }
+            if (similar_count == 3) {
+                return current_player;
+            }
+        }
+    }
+    return PL_EMPTY;
 }
 
 void add_player_selection(Player **pptr_board, Player player, int col) {
@@ -65,21 +94,21 @@ void add_player_selection(Player **pptr_board, Player player, int col) {
     }
 }
 
-void display_current_player(Player player) {
+std::string get_current_player(Player player) {
     if (player == PL_1) {
-        std::cout << "Player 1's turn\n";
+        return "Player 1";
     } else {
-        std::cout << "Player 2's turn\n";
+        return "Player 2";
     }
 }
 
 std::string get_player_character(Player player) {
     switch (player) {
         case PL_1:
-            return "*";
+            return "&";
             break;
         case PL_2:
-            return "+";
+            return "*";
             break;
         case PL_EMPTY:
             return " ";
