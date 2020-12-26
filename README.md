@@ -24,7 +24,7 @@ Otherwise, you can compile the `.cpp` file and run that using whatever compiler 
 g++ connect_four.cpp -o connect_four && ./connect_four
 ```
 
-![tic tac to gif](tic-tac-toe.gif)
+![connect four gif](connect-four.gif)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
