@@ -7,10 +7,13 @@ enum Player {
 };
 
 void display_gameboard(Player **pptr_board);
-std::string get_current_player(Player player);
 void add_player_selection(Player **pptr_board, Player player, int col);
-Player check_rows_for_winner(Player **pptr_board);
+
+std::string get_current_player(Player player);
 std::string get_player_character(Player player);
+
+Player check_cols_for_winner(Player **pptr_board);
+Player check_rows_for_winner(Player **pptr_board);
 
 int num_rows = 4;
 int num_cols = 5;
@@ -38,7 +41,7 @@ int main() {
         std::cin >> col;
         if (col == -1) break;
         add_player_selection(pptr_board, current_player, col);
-        if (check_rows_for_winner(pptr_board) != PL_EMPTY) {
+        if (check_rows_for_winner(pptr_board) != PL_EMPTY || check_cols_for_winner(pptr_board) != PL_EMPTY) {
             std::cout << get_current_player(current_player) << " wins!\n\n";
             break;
         }
@@ -49,6 +52,28 @@ int main() {
 
     std::cout << std::endl;
     return 0;
+}
+
+Player check_cols_for_winner(Player **pptr_board) {
+    Player last_player;
+    Player current_player;
+    for (int col = 0; col < num_cols; col++) {
+        int similar_count = 0;
+        // get the first row before we walk the rest
+        last_player = pptr_board[0][col];
+        for (int row = 1; row < num_rows; row++) {
+            current_player = pptr_board[row][col];
+            if (current_player == last_player && current_player != PL_EMPTY) {
+                similar_count++;
+            } else {
+                similar_count = 0;
+            }
+            if (similar_count == 3) {
+                return current_player;
+            }
+        }
+    }
+    return PL_EMPTY;  
 }
 
 Player check_rows_for_winner(Player **pptr_board) {
