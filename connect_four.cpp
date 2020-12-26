@@ -17,6 +17,7 @@ Player check_cols_for_winner(Player **pptr_board);
 Player check_rows_for_winner(Player **pptr_board);
 Player check_diagonals_for_winner(Player **pptr_board);
 Player walk_ltr_dialgonal_row(Player **pptr_board, int start_row);
+Player walk_rtl_dialgonal_row(Player **pptr_board, int start_row);
 
 int num_rows = 5;
 int num_cols = 5;
@@ -79,8 +80,6 @@ Player check_for_winner(Player **pptr_board) {
 Player walk_ltr_dialgonal_row(Player **pptr_board, int start_row) {
     Player last_player;
     Player current_player;
-    int start_col = 0;
-    int current_row = 0;
     int current_col;
     int similar_count = 0;
     for (int col = 0; col < num_cols - 3; col++) {
@@ -103,6 +102,31 @@ Player walk_ltr_dialgonal_row(Player **pptr_board, int start_row) {
     return PL_EMPTY;   
 }
 
+Player walk_rtl_dialgonal_row(Player **pptr_board, int start_row) {
+    Player last_player;
+    Player current_player;
+    int current_col;
+    int similar_count = 0;
+    for (int col = num_cols - 1; col > 2; col--) {
+        last_player = PL_EMPTY;
+        current_col = col;
+        for (int row = start_row; row < num_rows; row++) {
+            current_player = pptr_board[row][current_col];
+            if (current_player == last_player && current_player != PL_EMPTY) {
+                similar_count++;
+                if (similar_count == 3) {
+                    return current_player;
+                }
+            } else {
+                similar_count = 0;
+            }
+            last_player = current_player;
+            current_col--;
+        }
+    }
+    return PL_EMPTY;   
+}
+
 Player check_diagonals_for_winner(Player **pptr_board) {
     Player winner;
 
@@ -113,6 +137,11 @@ Player check_diagonals_for_winner(Player **pptr_board) {
     // 1,0  2,1  3,2  4,3
     for (int row = 0; row < num_rows - 3; row++) {
         winner = walk_ltr_dialgonal_row(pptr_board, row);
+        if (winner != PL_EMPTY) return winner;
+    }
+
+    for (int row = 0; row < num_rows - 3; row++) {
+        winner = walk_rtl_dialgonal_row(pptr_board, row);
         if (winner != PL_EMPTY) return winner;
     }
 
