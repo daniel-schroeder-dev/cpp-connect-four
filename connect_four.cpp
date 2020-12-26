@@ -34,7 +34,6 @@ int main() {
         std::cin >> num_cols;
     }
 
-
     Player **pptr_board = new Player*[num_rows];
 
     for (int i = 0; i < num_rows; i++) {
