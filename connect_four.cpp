@@ -7,6 +7,7 @@ enum Player {
 };
 
 void display_gameboard(Player **pptr_board);
+void display_current_player(Player player);
 std::string get_player_character(Player player);
 
 int num_rows = 4;
@@ -25,19 +26,28 @@ int main() {
         }
     }
 
-    Player current = PL_1;
+    Player current_player = PL_1;
     int col;
 
     while (true) {
         display_gameboard(pptr_board);
+        display_current_player(current_player);
         std::cout << "Which column do you want to add your player to? (-1 to quit)  ";
         std::cin >> col;
         if (col == -1) break;
-        current = current == PL_1 ? PL_2 : PL_1;
+        current_player = current_player == PL_1 ? PL_2 : PL_1;
     }
 
     std::cout << std::endl;
     return 0;
+}
+
+void display_current_player(Player player) {
+    if (player == PL_1) {
+        std::cout << "Player 1's turn\n";
+    } else {
+        std::cout << "Player 2's turn\n";
+    }
 }
 
 std::string get_player_character(Player player) {
