@@ -45,6 +45,10 @@ int main() {
 }
 
 void add_player_selection(Player **pptr_board, Player player, int col) {
+    if (col < 0 || col > num_cols - 1) {
+        std::cout << "Invalid selection!\n";
+        return;
+    }
     int last_row = num_rows - 1;
     for (int row = 0; row < num_rows; row++) {
         // if we hit a non-empty row in this col
