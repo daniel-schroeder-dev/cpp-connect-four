@@ -34,6 +34,8 @@ g++ connect_four.cpp -o connect_four && ./connect_four
 
 ### Left-To-Right Diagonal Winner
 
+![connect four ltr winner gif](connect-four-ltf-winner.gif)
+
 ### Right-To-Left Diagonal Winner
 
 ## Contributing
