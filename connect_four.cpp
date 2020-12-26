@@ -92,8 +92,8 @@ Player walk_ltr_dialgonal_row(Player **pptr_board, int start_row) {
     Player last_player;
     Player current_player;
     int current_col;
-    int similar_count = 0;
     for (int col = 0; col < num_cols - 3; col++) {
+        int similar_count = 0;
         last_player = PL_EMPTY;
         current_col = col;
         for (int row = start_row; row < num_rows; row++) {
@@ -117,8 +117,8 @@ Player walk_rtl_dialgonal_row(Player **pptr_board, int start_row) {
     Player last_player;
     Player current_player;
     int current_col;
-    int similar_count = 0;
     for (int col = num_cols - 1; col > 2; col--) {
+        int similar_count = 0;
         last_player = PL_EMPTY;
         current_col = col;
         for (int row = start_row; row < num_rows; row++) {
