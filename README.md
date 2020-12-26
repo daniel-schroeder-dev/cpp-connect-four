@@ -40,6 +40,10 @@ g++ connect_four.cpp -o connect_four && ./connect_four
 
 ![connect four rtl winner gif](connect-four-rtl-winner.gif)
 
+### Tie
+
+![connect four tie gif](connect-four-tie.gif)
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
