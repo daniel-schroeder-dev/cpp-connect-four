@@ -7,6 +7,7 @@ enum Player {
 };
 
 void display_gameboard(Player **pptr_board);
+std::string get_player_character(Player player);
 
 int num_rows = 4;
 int num_cols = 5;
@@ -30,10 +31,27 @@ int main() {
     return 0;
 }
 
+std::string get_player_character(Player player) {
+    switch (player) {
+        case PL_1:
+            return "*";
+            break;
+        case PL_2:
+            return "+";
+            break;
+        case PL_EMPTY:
+            return " ";
+            break;
+        default:
+            return "!";
+            break;
+    }
+}
+
 void display_gameboard(Player **pptr_board) {
     for (int row = 0; row < num_rows; row++) {
         for (int col = 0; col < num_cols; col++) {
-            std::cout << " | " << pptr_board[row][col];
+            std::cout << " | " << get_player_character(pptr_board[row][col]);
         }
         std::cout << " | \n";
     }
