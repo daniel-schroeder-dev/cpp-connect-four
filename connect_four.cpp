@@ -21,6 +21,8 @@ Player walk_rtl_dialgonal_row(Player **pptr_board, int start_row);
 
 int num_rows = 0;
 int num_cols = 0;
+int slots_filled = 0;
+int total_slots;
 
 int main() {
 
@@ -33,6 +35,8 @@ int main() {
         std::cout << "Enter number of columns for gameboard (4 min): ";
         std::cin >> num_cols;
     }
+
+    total_slots = num_rows * num_cols;
 
     Player **pptr_board = new Player*[num_rows];
 
@@ -60,6 +64,10 @@ int main() {
         winner = check_for_winner(pptr_board);
         if (winner != PL_EMPTY) {
             std::cout << "\n" << get_current_player(current_player) << " wins!\n\n";
+            break;
+        }
+        if (slots_filled == total_slots) {
+            std::cout << "\nIt's a tie!\n\n";
             break;
         }
         current_player = current_player == PL_1 ? PL_2 : PL_1;
@@ -224,6 +232,7 @@ void add_player_selection(Player **pptr_board, Player player, int col) {
             break;
         }
     }
+    slots_filled++;
 }
 
 std::string get_current_player(Player player) {
