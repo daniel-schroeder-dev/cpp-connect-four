@@ -14,6 +14,7 @@ std::string get_player_character(Player player);
 
 Player check_cols_for_winner(Player **pptr_board);
 Player check_rows_for_winner(Player **pptr_board);
+Player check_diagonals_for_winner(Player **pptr_board);
 
 int num_rows = 4;
 int num_cols = 5;
@@ -41,7 +42,12 @@ int main() {
         std::cin >> col;
         if (col == -1) break;
         add_player_selection(pptr_board, current_player, col);
-        if (check_rows_for_winner(pptr_board) != PL_EMPTY || check_cols_for_winner(pptr_board) != PL_EMPTY) {
+        if (
+            check_rows_for_winner(pptr_board) != PL_EMPTY || 
+            check_cols_for_winner(pptr_board) != PL_EMPTY ||
+            check_diagonals_for_winner(pptr_board) != PL_EMPTY
+            ) 
+        {
             std::cout << get_current_player(current_player) << " wins!\n\n";
             break;
         }
@@ -52,6 +58,39 @@ int main() {
 
     std::cout << std::endl;
     return 0;
+}
+
+Player check_diagonals_for_winner(Player **pptr_board) {
+    Player last_player;
+    Player current_player;
+    // left-to-right diagonal
+    int start_col = 0;
+    int current_row = 0;
+    int current_col;
+    int similar_count = 0;
+
+    // 0,0  1,1  2,2  3,3
+    // 0,1  1,2  2,3  3,4
+    // break
+
+    for (int col = 0; col < num_cols - 3; col++) {
+        last_player = PL_EMPTY;
+        current_col = col;
+        for (int row = 0; row < num_rows; row++) {
+            current_player = pptr_board[row][current_col];
+            if (current_player == last_player && current_player != PL_EMPTY) {
+                similar_count++;
+                if (similar_count == 3) {
+                    return current_player;
+                }
+            } else {
+                similar_count = 0;
+            }
+            last_player = current_player;
+            current_col++;
+        }
+    }
+    return PL_EMPTY;
 }
 
 Player check_cols_for_winner(Player **pptr_board) {
