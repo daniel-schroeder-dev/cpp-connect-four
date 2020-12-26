@@ -1,6 +1,6 @@
 # Connect Four C++
 
-This is a simple Connect Four app written in some basic C++.
+This is a simple Connect Four app written in some basic C++. It accepts an arbitrary number of rows and columns for the game board.
 
 ## Installation
 
